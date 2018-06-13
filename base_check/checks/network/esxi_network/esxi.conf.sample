@@ -1,0 +1,17 @@
+##############rename file name to esxi.conf etc########################################
+[check_base_network_conf]
+device_conf = {'vmnic0': {'speed': 20, 'MTU': 1500}, 'vmnic1':{'speed': 1000, 'MTU': 21500},'vmnic2':{'speed': 1000, 'MTU': 1500},'vmnic3':{'speed': 1000, 'MTU': 1500},'vmnic4':{'speed': 10000, 'MTU': 1500},'vmnic5':{'speed': 10000, 'MTU': 1500},'vmnic6':{'speed': 10000, 'MTU': 1500},'vmnic7':{'speed': 10000, 'MTU': 1500}}
+
+[check_connection]
+target_devices = { 'vmk0':{ 'gateway': '172.28.8.42'}}
+ping_test_duration = '1000'
+ping_test_timeout = 25
+
+[check_esxi_vswich]
+target_devices = {'vSwitch0':['vmnic0','vmnic1'],'vSwitch1':['vmnic2','vmnic4'],'vSwitch2':['vmnic3','vmnic5']}
+
+[check_esxi_uplink_up]
+target_devices = {'vSwitch0':['vmnic0','vmnic1'],'vSwitch1':['vmnic2','vmnic4'],'vSwitch2':['vmnic3','vmnic5']}
+
+[check_esxi_uplink_down]
+target_devices = {'vSwitch0':['vmnic0','vmnic1'],'vSwitch1':['vmnic2','vmnic4'],'vSwitch2':['vmnic3','vmnic5']}

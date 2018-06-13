@@ -1,0 +1,57 @@
+---
+#Copy the python scripts dir
+- name: Compress python directory
+  archive: path={{ ansible_base_path }}/../../  dest=/tmp/base_check.gz
+  connection: local
+  ignore_errors: true
+  tags:
+    - debug
+    - info
+
+- name: Mkdir directory
+  file: path=/tmp/base_check state=directory mode=755
+  tags:
+    - debug
+    - info
+
+- name: Unpacks Compressed python directory
+  unarchive: src=/tmp/base_check.gz dest=/tmp/base_check
+  tags:
+    - debug
+    - info
+
+- name: Delete Compressed python directory
+  file: path=/tmp/base_check.gz  state=absent
+  connection: local
+  ignore_errors: true
+  tags:
+    - debug
+    - info
+
+#Register the result of base check
+- name: Register the result of base check
+  shell: "python /tmp/base_check/base_check/main.py --log-stdout-level DEBUG|xargs"
+  register: base_check
+  tags:
+    - debug
+
+- name: Register the result of base check
+  shell: "python /tmp/base_check/base_check/main.py|xargs"
+  register: base_check
+  tags:
+    - info
+
+#Show the result of check
+- name: show the check result
+  debug:
+    msg: "{{ base_check.stdout }}"
+  tags:
+    - debug
+    - info
+
+#Delete the python scripts dir
+- name: Delete the python scripts
+  file: path=/tmp/base_check  state=absent
+  tags:
+    - debug
+    - info
